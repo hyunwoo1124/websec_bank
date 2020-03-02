@@ -311,9 +311,9 @@ function Bank(name, initCustomerList)
 			match = this.login(userName, userPassword);
 		
 		} while(!match);
-		
-		
 		// Get the customer
+		
+		//this.masterChoice();
 		let customer = this.getCustomer(userName);
 		
 		// Show the user menu
@@ -340,7 +340,11 @@ function Bank(name, initCustomerList)
 			// Check the password
 			if(customer.getPassword() == userPassword) { match = true; }
 		}
-		
+		// New code added to add exception
+		else{
+			console.log("You are not registered. Please create an account...\n")
+			this.masterChoice();
+		}
 		return match;
 	}
 	
@@ -412,7 +416,6 @@ function Bank(name, initCustomerList)
 		
 		// Get the deposit amount
 		let depositAmount = readline.question("Please enter the deposit amount: ");
-		
 		// Deposit the money	
 		account.deposit(depositAmount);			
 		
@@ -437,7 +440,6 @@ function Bank(name, initCustomerList)
 		
 		// Get the withdraw amount
 		let withdrawAmount = readline.question("Please enter the withraw amount: ");
-		
 		// Deposit the money	
 		account.withdraw(withdrawAmount);			
 		
