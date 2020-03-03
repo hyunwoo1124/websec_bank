@@ -42,7 +42,8 @@ function Account(acctName, acctBalance, type)
 	
 	// Deposits money to the account
 	// @param amount - the amount to deposit
-	this.deposit = function(amount) { this.acctBalance  = this.acctBalance +  amount; }
+	// Austin Properly adds numbers together
+	this.deposit = function(amount) { this.acctBalance  = parseFloat(this.acctBalance) + parseFloat(amount); }
 	
 	// Withdraws money from the account
 	// @param amount - the amount to withdraw
@@ -415,7 +416,15 @@ function Bank(name, initCustomerList)
 		let account = user.getAccount(accountIndex - 1);	
 		
 		// Get the deposit amount
-		let depositAmount = readline.question("Please enter the deposit amount: ");
+		// Austin now checks if deposit amount is NaN or negative
+		let depositAmount = NaN;
+		while (isNaN(depositAmount) || (depositAmount < 0)){
+			depositAmount = readline.question("Please enter the deposit amount: ");
+			
+			if(isNaN(depositAmount) || (depositAmount < 0)){
+				console.log("That is not a valid number");
+			}	
+		}
 		// Deposit the money	
 		account.deposit(depositAmount);			
 		
