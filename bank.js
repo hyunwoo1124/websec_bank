@@ -144,6 +144,8 @@ function Bank(name, initCustomerList)
 		
 		// Save the customer
 		this.customers[customer.getUserName()] = customer;
+		
+		
 	}
 	
 	// ----------------------------------------------
@@ -162,7 +164,12 @@ function Bank(name, initCustomerList)
 		// Create and add user
 		this.createAndAddCustomer(userName, userPassword);
 		
+		// makes customer open account so they can do stuff with money- jason
+		this.openAccountUI(customer);
+		
 		console.log("Created account for ", userName);
+		
+		
 	}
 
 	// -----------------------------------------------
