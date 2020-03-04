@@ -42,12 +42,21 @@ function Account(acctName, acctBalance, type)
 	
 	// Deposits money to the account
 	// @param amount - the amount to deposit
-	// Austin Properly adds numbers together
+	// Austin now forces a number data type
 	this.deposit = function(amount) { this.acctBalance  = parseFloat(this.acctBalance) + parseFloat(amount); }
 	
 	// Withdraws money from the account
 	// @param amount - the amount to withdraw
-	this.withdraw = function(amount){ this.acctBalance = this.acctBalance - amount; }
+	// Austin now forces a number data type
+	// Austin also checks if the account has enough money
+	this.withdraw = function(amount){ 
+		if (parseFloat(this.acctBalance) < parseFloat(amount)){
+			console.log("Account does not have enough money. Process voided.");
+		}
+		else{
+			this.acctBalance = parseFloat(this.acctBalance) - parseFloat(amount); 
+		}
+	}
 	
 	// Prints the account information
 	this.printAcct = function()
@@ -424,12 +433,12 @@ function Bank(name, initCustomerList)
 		
 		// Get the deposit amount
 		// Austin now checks if deposit amount is NaN or negative
-		let depositAmount = NaN;
+		let depositAmount = -5;
 		while (isNaN(depositAmount) || (depositAmount < 0)){
 			depositAmount = readline.question("Please enter the deposit amount: ");
 			
 			if(isNaN(depositAmount) || (depositAmount < 0)){
-				console.log("That is not a valid number");
+				console.log("That is not a valid number.");
 			}	
 		}
 		// Deposit the money	
@@ -455,7 +464,17 @@ function Bank(name, initCustomerList)
 		let account = customer.getAccount(accountIndex - 1);	
 		
 		// Get the withdraw amount
-		let withdrawAmount = readline.question("Please enter the withraw amount: ");
+		// Austin now checks if withdraw amount is NaN or negative
+		let withdrawAmount = -5;
+		
+		while (isNaN(withdrawAmount) || (withdrawAmount < 0)){
+			withdrawAmount = readline.question("Please enter the withraw amount: ");
+			
+			if(isNaN(withdrawAmount) || (withdrawAmount < 0)){
+				console.log("That is not a valid number.");
+			}	
+		}	
+			
 		// Deposit the money	
 		account.withdraw(withdrawAmount);			
 		
