@@ -416,7 +416,7 @@ function Bank(name, initCustomerList)
 		let initialDeposit = readline.question("Please enter the deposit amount: ");
 		
 		// The account name
-		this.createAccount(customer, accountName, parseFloat(initialDeposit), accountType);
+		this.createAccount(customer, accountName, parseFloat(initialDeposit), choosenType);
 	}
 
 	// ------------------------------------------------------
