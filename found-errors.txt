@@ -4,3 +4,4 @@ deposit did not check for NaN or negative numbers
 deposit addition did not check for data type
 withdraw did not check for NaN or negative numbers
 withdraw subtraction did not check for data type
+withdraw now checks if the account has enough money for the withdraw amount
