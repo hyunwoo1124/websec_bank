@@ -52,6 +52,11 @@ function Account(acctName, acctBalance, type)
 	this.withdraw = function(amount){ 
 		if (parseFloat(this.acctBalance) < parseFloat(amount)){
 			console.log("Account does not have enough money. Process voided.");
+			// Show the user menu
+			//this.userActionMenuUI();
+			/*
+			we should bring a userActionMenuUI
+			*/
 		}
 		else{
 			this.acctBalance = parseFloat(this.acctBalance) - parseFloat(amount); 
@@ -174,7 +179,7 @@ function Bank(name, initCustomerList)
 		this.createAndAddCustomer(userName, userPassword);
 		
 		// makes customer open account so they can do stuff with money- jason
-		this.openAccountUI(customer);
+		//this.openAccountUI(customer);
 		
 		console.log("Created account for ", userName);
 		
@@ -357,7 +362,7 @@ function Bank(name, initCustomerList)
 			// Check the password
 			if(customer.getPassword() == userPassword) { match = true; }
 		}
-		// New code added to add exception
+		// New code added to add exception - kevin
 		else{
 			console.log("You are not registered. Please create an account...\n")
 			this.masterChoice();
