@@ -566,6 +566,14 @@ function Bank(name, initCustomerList)
 			clearScreeen();
 		}
 	}
+	
+	//closes a specific account- jason
+	//I cant get the splice to work
+	this.closeAccount= function(user)
+	{
+	    this.accountIndex = readline.question("which account would you like to close: ")
+	    this.accounts.splice(accounts.indexOf(accountIndex),1)
+	}		
 }
 
 // ---- Sample Test Code --------
