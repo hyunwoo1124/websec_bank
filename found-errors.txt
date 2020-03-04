@@ -1,1 +1,6 @@
 A simple list of all current errors/issues found
+
+deposit did not check for NaN or negative numbers
+deposit addition did not check for data type
+withdraw did not check for NaN or negative numbers
+withdraw subtraction did not check for data type
