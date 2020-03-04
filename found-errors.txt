@@ -1,7 +1,17 @@
 A simple list of all current errors/issues found
 
-deposit did not check for NaN or negative numbers
-deposit addition did not check for data type
-withdraw did not check for NaN or negative numbers
-withdraw subtraction did not check for data type
-withdraw now checks if the account has enough money for the withdraw amount
+
+- deposit did not check for NaN or negative numbers
+- deposit addition did not check for data type
+- withdraw did not check for NaN or negative numbers
+- withdraw subtraction did not check for data type
+- withdraw now checks if the account has enough money for the withdraw amount
+
+- changed all vars to let
+    - moved let into correct block of code to be interpreted
+- if account doesnt exist and try to deposit or withdraw program crashes
+- transfering has issues where if account src has 0 balance and tries to transfering
+  money to dest account, it valids the transaction
+    - account 1: 400, account 2: 300 -> transfer 400 -> account1:0, account 2:700
+    - account 1:0, account 2:700 -> transfer 300 -> account 1:0, account 2:1000
+- The account transfer money out of thin air when transfering account with insufficient funds

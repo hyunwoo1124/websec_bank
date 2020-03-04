@@ -57,6 +57,7 @@ function Account(acctName, acctBalance, type)
 			/*
 			we should bring a userActionMenuUI
 			*/
+			this.userActionMenuUI
 		}
 		else{
 			this.acctBalance = parseFloat(this.acctBalance) - parseFloat(amount); 
