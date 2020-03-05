@@ -52,6 +52,12 @@ function Account(acctName, acctBalance, type)
 	this.withdraw = function(amount){ 
 		if (parseFloat(this.acctBalance) < parseFloat(amount)){
 			console.log("Account does not have enough money. Process voided.");
+			// Show the user menu
+			//this.userActionMenuUI();
+			/*
+			we should bring a userActionMenuUI
+			*/
+			this.userActionMenuUI
 		}
 		else{
 			this.acctBalance = parseFloat(this.acctBalance) - parseFloat(amount); 
@@ -174,7 +180,7 @@ function Bank(name, initCustomerList)
 		this.createAndAddCustomer(userName, userPassword);
 		
 		// makes customer open account so they can do stuff with money- jason
-		this.openAccountUI(customer);
+		//this.openAccountUI(customer);
 		
 		console.log("Created account for ", userName);
 		
@@ -357,7 +363,7 @@ function Bank(name, initCustomerList)
 			// Check the password
 			if(customer.getPassword() == userPassword) { match = true; }
 		}
-		// New code added to add exception
+		// New code added to add exception - kevin
 		else{
 			console.log("You are not registered. Please create an account...\n")
 			this.masterChoice();
@@ -410,7 +416,7 @@ function Bank(name, initCustomerList)
 		let initialDeposit = readline.question("Please enter the deposit amount: ");
 		
 		// The account name
-		this.createAccount(customer, accountName, parseFloat(initialDeposit), accountType);
+		this.createAccount(customer, accountName, parseFloat(initialDeposit), choosenType);
 	}
 
 	// ------------------------------------------------------
@@ -508,13 +514,20 @@ function Bank(name, initCustomerList)
 		let dstAccount = customer.getAccount(accountIndex - 1);		
 		
 		// Get the transfer amount
-		let transferAmount = readline.question("Please enter the transfer amount: ");
-		
+		// Austin Checks for NaN or negative numbers
+		let transferAmount = -5;
+		while (isNaN(transferAmount) || (transferAmount < 0)){
+			transferAmount = readline.question("Please enter the transfer amount: ");
+			
+			if(isNaN(transferAmount) || (transferAmount < 0)){
+				console.log("That is not a valid number.");
+			}	
+		}
 		//Austin Checks if account has enough money to transfer
 		if(parseFloat(srcAccount.acctBalance) >= parseFloat(transferAmount)) {
 			// Withdraw the money from the source account
 			srcAccount.withdraw(transferAmount);
-		
+
 			// Deposit the money
 			dstAccount.deposit(transferAmount);			
 			console.log("Updated account information: ");
@@ -522,10 +535,10 @@ function Bank(name, initCustomerList)
 			console.log("\n");
 			dstAccount.printAcct();
 		}
-		
 		else { 
 			console.log("Account does not have enough money. Process voided."); 
 		} 
+
 	}
 		
 	// ---------------------------------------------
@@ -571,6 +584,14 @@ function Bank(name, initCustomerList)
 			clearScreeen();
 		}
 	}
+	
+	//closes a specific account- jason
+	//I cant get the splice to work
+	this.closeAccount= function(user)
+	{
+	    this.accountIndex = readline.question("which account would you like to close: ")
+	    this.accounts.splice(accounts.indexOf(accountIndex),1)
+	}		
 }
 
 // ---- Sample Test Code --------
