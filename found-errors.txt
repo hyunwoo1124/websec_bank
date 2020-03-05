@@ -15,3 +15,6 @@ A simple list of all current errors/issues found
     - account 1: 400, account 2: 300 -> transfer 400 -> account1:0, account 2:700
     - account 1:0, account 2:700 -> transfer 300 -> account 1:0, account 2:1000
 - The account transfer money out of thin air when transfering account with insufficient funds
+-changed the create account so it says checking or saving instead of 1 and 2
+    -this.createAccount(customer, accountName, parseFloat(initialDeposit),accountType);
+    -this.createAccount(customer, accountName, parseFloat(initialDeposit), choosenType);
