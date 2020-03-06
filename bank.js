@@ -331,10 +331,10 @@ function Bank(name, initCustomerList)
 	
 			// Get the password	
 			userPassword = readline.question("Password: ");
-				
+
 			// Whether there was a match
 			match = this.login(userName, userPassword);
-		
+
 		} while(!match);
 		// Get the customer
 		
@@ -356,8 +356,6 @@ function Bank(name, initCustomerList)
 		// The match
 		let match = false;
 		
-		console.log(this.customers);
-
 		// Is this a registered user?
 		if(userName in this.customers)
 		{
@@ -693,11 +691,36 @@ function Bank(name, initCustomerList)
 	}
 	
 	//closes a specific account- jason
-	//I cant get the splice to work
 	this.closeAccount= function(user)
 	{
-	    this.accountIndex = readline.question("which account would you like to close: ")
-	    this.accounts.splice(accounts.indexOf(accountIndex),1)
+		// Get the accounts
+		let accounts = user.getAccounts();
+		console.log(user.getAccount());
+		// The account counter
+		let accountNum = 1;
+			
+		// Print the accounts
+		for(account of accounts)
+		{
+
+			console.log("Account ", accountNum);
+			account.printAcct();
+			
+			// Next account
+			accountNum += 1;
+		}
+		accountNum -= 1;
+		let removeAccount = -5;
+		while (isNaN(removeAccount) || (removeAccount <= 0) || (removeAccount > accountNum)){
+			removeAccount = readline.question("which account would you like to close: ")
+			
+			if(isNaN(removeAccount) || (removeAccount <= 0) || (removeAccount > accountNum)){
+				console.log("That is not a valid account number.");
+			}	
+		}
+		//reduces it by 1 for correct array spot
+		removeAccount -= 1;
+	    this.accounts = user.accounts.splice(removeAccount,1)
 	}		
 }
 
