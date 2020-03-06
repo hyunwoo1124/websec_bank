@@ -272,6 +272,8 @@ function Bank(name, initCustomerList)
 		// Print the accounts
 		for(account of accounts)
 		{
+			
+
 			console.log("Account ", accountNum);
 			account.printAcct();
 			
@@ -354,6 +356,8 @@ function Bank(name, initCustomerList)
 		// The match
 		let match = false;
 		
+		console.log(this.customers);
+
 		// Is this a registered user?
 		if(userName in this.customers)
 		{
@@ -419,6 +423,60 @@ function Bank(name, initCustomerList)
 		this.createAccount(customer, accountName, parseFloat(initialDeposit), choosenType);
 	}
 
+	// --------------------------------------------------
+	// Returns the account at a particular index if it exists
+	// @param user - the user
+	// @param accountChoice - the account choice
+	// @return - returns the account at the given index it
+	// exists. Otherwise, returns null
+	// --------------------------------------------------
+	this.getAccount = function(user, accountChoice)
+	{
+		// Get the user accounts
+		let accounts = user.userAccounts();
+
+		// THe account
+		let account = null;
+
+		// Check the account index
+		if(accounts.length > accountChoice && !isNaN(accountChoice))
+		{
+			accountChoice = accounts[accountChoice - 1];
+		}
+
+		return account;
+	}
+	
+
+	// ----------------------------------------------------
+	// Checks to make sure that the entered amount is valid
+	// @param ammount - the amount
+	// @return - true if the ammount is valid an false otherwise
+	// ----------------------------------------------------
+	this.validateAmount = function(amount)
+	{
+		// The return value
+		let retVal = true;
+		
+		// A NaN value
+		if(isNaN(amount)) { retVal = false; }
+
+		// Infinite
+		else if(!isFinite(amount)) { retVal = false; }
+
+		// Null
+		else if(amount === null) { retVal = false; }
+	
+		// Check for the negative amont
+		else if(amount < 0) { retVal = false; }
+		
+		// Make sure it is a number
+		else if(typeof(amount) !== 'number') { retVal = false; }
+
+		return retVal;
+
+	}
+
 	// ------------------------------------------------------
 	// The UI for depositing money
 	// @param user - the owner of the account
@@ -430,29 +488,78 @@ function Bank(name, initCustomerList)
 		
 		// Show all accounts of the user
 		this.viewAccounts(user);
+		// -kevin added this but creates an arror
+		//let accountExist = this.viewAccounts(user)
 		
-		// Get the account choice
-		let accountIndex = readline.question("Please select an account by entering a choice (e.g., enter 1 for the first account) ");
-		
-		// Get the account based on index
-		let account = user.getAccount(accountIndex - 1);	
-		
-		// Get the deposit amount
-		// Austin now checks if deposit amount is NaN or negative
-		let depositAmount = -5;
-		while (isNaN(depositAmount) || (depositAmount < 0)){
-			depositAmount = readline.question("Please enter the deposit amount: ");
-			
-			if(isNaN(depositAmount) || (depositAmount < 0)){
-				console.log("That is not a valid number.");
-			}	
+		// Get the coounts
+		let accounts = user.getAccounts();
+
+		if(accounts.length > 0)
+		{
+
+			this.viewAccounts(user)
+			/*
+			if (accountExist === ''){
+				console.log("You do not have an account with us yet.\n")
+				console.log("Please create an account first...\n")
+				console.log("Bringing your options...\n")
+				this.userActionMenuUI()
+			}
+			*/
+
+
+			// Get the account choice
+			let accountIndex = readline.question("Please select an account by entering a choice (e.g., enter 1 for the first account) ");
+
+			// Convert to an integer
+			let intChoice = +accountIndex;
+
+
+
+			// Get the account based on index
+			let account = user.getAccount(accountIndex - 1);	
+
+			if(account)
+			{
+
+				// Get the deposit amount
+				// Austin now checks if deposit amount is NaN or negative
+				let intAmount = -5;
+
+				let done = false;
+
+				while (!done)
+				{
+					let depositAmount = readline.question("Please enter the deposit amount: ");
+					
+					// Convert to integer
+					let intAmount = +depositAmount;
+					
+					done = validateAmount(intAmount);
+
+					if(!done){
+						console.log("That is not a valid number.");
+					}	
+				}
+
+			// Deposit the money	
+			/*
+			Trying to ensure that user can only deposit to an exisintg account
+			If noexistent, should have exception error
+			*/
+
+				account.deposit(intAmount);			
+
+
+				console.log("Updated account information: ");
+				account.printAcct();
+			}
 		}
-		// Deposit the money	
-		account.deposit(depositAmount);			
-		
-		
-		console.log("Updated account information: ");
-		account.printAcct();		
+		// No valid bank accounts
+		else
+		{
+			console.log("\nSorry, you currently do not have any open accounts with us\n");
+		}
 	}
 
 	// ------------------------------------------------------
