@@ -1,5 +1,29 @@
 A simple list of all current errors/issues found
+Issues found | fixed | both
 
+0. Login
+    - Ensure to create an account first before login        (FIXED)
+    - Cannot login before creating an account               (FIXED)
+1. Deposit
+    - Deposit did not check for NaN or Negative numbers     (PROBLEM)
+    - Deposit addition  check for data type                 (Fixed)
+    - Deposi can deposit negative values                    (Problem)
+    - Deposit cannot deposit to an non-existent account     (FIXED)
+2. Withdraw
+    - User can withdraw money from nonexistent account      (PROBLEM)
+    - Checked for withdrawl of datatype                     (FIXED)
+3. Transfer
+    - Transfer money with data type checked                 (FIXED)
+    - User can transfer account without having 2 accounts   (PROBLEM)
+4. View Accounts
+    - Work flawlessly                                        (/)
+5. Open New Account
+    - Allow user to create an Account wtih correct indexes  (FIXED)
+6. Remove Account
+    - User can delete account with nonexistent account      (PROBLEM)
+    - If user has an account delete does not work           (PROBLEM)
+7. Logout
+    - works flawlessley                                     (/)
 
 - deposit did not check for NaN or negative numbers
 - deposit addition did not check for data type
