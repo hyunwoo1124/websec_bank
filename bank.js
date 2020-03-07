@@ -405,6 +405,7 @@ function Bank(name, initCustomerList)
 		let accountName = readline.question("Please choose an account name: ");	
 		
 		// Get the account type
+		
 		let accountType = readline.question("Please choose (1) for savings and (2) for checking: ");
 		
 		// The account type
@@ -414,11 +415,26 @@ function Bank(name, initCustomerList)
 		if(accountType == 1) { choosenType = "savings"; }
 		else { choosenType = "checking"; }
 		
-		// The initial deposit	
-		let initialDeposit = readline.question("Please enter the deposit amount: ");
+		// The initial deposit
+		let done = false;
+		let intAmount = 0;
+		while (!done)
+		{
+			let initialDeposit = readline.question("Please enter the deposit amount: ");
+					
+			// Convert to integer
+			intAmount = +initialDeposit;
+					
+			done = validateAmount(intAmount);
+
+			if(!done){
+				console.log("That is not a valid number.");
+			}	
+		}	
+		
 		
 		// The account name
-		this.createAccount(customer, accountName, parseFloat(initialDeposit), choosenType);
+		this.createAccount(customer, accountName, parseFloat(intAmount), choosenType);
 	}
 
 	// --------------------------------------------------
@@ -451,11 +467,10 @@ function Bank(name, initCustomerList)
 	// @param ammount - the amount
 	// @return - true if the ammount is valid an false otherwise
 	// ----------------------------------------------------
-	this.validateAmount = function(amount)
+	validateAmount = function(amount)
 	{
 		// The return value
 		let retVal = true;
-		
 		// A NaN value
 		if(isNaN(amount)) { retVal = false; }
 
@@ -470,7 +485,6 @@ function Bank(name, initCustomerList)
 		
 		// Make sure it is a number
 		else if(typeof(amount) !== 'number') { retVal = false; }
-
 		return retVal;
 
 	}
@@ -484,8 +498,6 @@ function Bank(name, initCustomerList)
 		// The deposit account
 		//MIG: Stopped here
 		
-		// Show all accounts of the user
-		this.viewAccounts(user);
 		// -kevin added this but creates an arror
 		//let accountExist = this.viewAccounts(user)
 		
@@ -494,7 +506,6 @@ function Bank(name, initCustomerList)
 
 		if(accounts.length > 0)
 		{
-
 			this.viewAccounts(user)
 			/*
 			if (accountExist === ''){
@@ -505,25 +516,18 @@ function Bank(name, initCustomerList)
 			}
 			*/
 
-
 			// Get the account choice
 			let accountIndex = readline.question("Please select an account by entering a choice (e.g., enter 1 for the first account) ");
 
-			// Convert to an integer
-			let intChoice = +accountIndex;
-
-
-
 			// Get the account based on index
 			let account = user.getAccount(accountIndex - 1);	
-
+			let intAmount = 0;
+			
 			if(account)
 			{
 
 				// Get the deposit amount
 				// Austin now checks if deposit amount is NaN or negative
-				let intAmount = -5;
-
 				let done = false;
 
 				while (!done)
@@ -531,7 +535,7 @@ function Bank(name, initCustomerList)
 					let depositAmount = readline.question("Please enter the deposit amount: ");
 					
 					// Convert to integer
-					let intAmount = +depositAmount;
+					intAmount = +depositAmount;
 					
 					done = validateAmount(intAmount);
 
@@ -547,8 +551,6 @@ function Bank(name, initCustomerList)
 			*/
 
 				account.deposit(intAmount);			
-
-
 				console.log("Updated account information: ");
 				account.printAcct();
 			}
@@ -577,21 +579,36 @@ function Bank(name, initCustomerList)
 		// Get the withdraw amount
 		// Austin now checks if withdraw amount is NaN or negative
 		let withdrawAmount = -5;
-		
-		while (isNaN(withdrawAmount) || (withdrawAmount < 0)){
-			withdrawAmount = readline.question("Please enter the withraw amount: ");
+		let intAmount = 0;
+		let done = false;
 			
-			if(isNaN(withdrawAmount) || (withdrawAmount < 0)){
-				console.log("That is not a valid number.");
-			}	
-		}	
+		if(account)
+		{
+			while (!done)
+			{
+				let withdrawAmount = readline.question("Please enter the deposit amount: ");
+					
+				// Convert to integer
+				intAmount = +withdrawAmount;
+					
+				done = validateAmount(intAmount);
+
+				if(!done){
+					console.log("That is not a valid number.");
+				}	
+			}
 			
-		// Deposit the money	
-		account.withdraw(withdrawAmount);			
+			account.withdraw(intAmount);			
+			console.log("Updated account information: ");
+			account.printAcct();
+
 		
-		// Show the updated account information	
-		console.log("Updated account information: ");
-		account.printAcct();
+		}				
+		// No valid bank accounts
+		else
+		{
+			console.log("\nSorry, you currently do not have any open accounts with us\n");
+		}
 	}
 
 	
@@ -605,45 +622,102 @@ function Bank(name, initCustomerList)
 		
 		// Show the account information
 		this.viewAccounts(customer);
-			
+		
+		let accounts = customer.getAccounts();
+		// The account number
+		let acctNum = 0;
+		
+		// Gets number of accounts
+		for(account of accounts)
+		{
+			acctNum++;
+		}	
 		// Get the source account
-		let accountIndex = readline.question("Please select the source account by entering a choice (e.g., enter 1 for the first account) ");
+		let input = 0;
+		let activeAccount1 = 0;
+		let activeAccount2 = 0;
+		let done = false;
 		
-		// Get the destination account based on index
-		let srcAccount = customer.getAccount(accountIndex - 1);
+		// Austin acctNum ensures that there are at least 2 accounts to transfer
+		if(acctNum >= 2){
+			// Austin checks if choice is not an account
+			while (!done || activeAccount1 <= 0 || activeAccount1 > acctNum)
+			{
+				// Get the source account
+				accountIndex = readline.question("Please select the source account by entering a choice (e.g., enter 1 for the first account) ");
+				// Convert to integer
+				activeAccount1 = +accountIndex;
+					
+				done = validateAmount(activeAccount1);
+				if(!done){
+					console.log("That is not a valid account number.");
+				}	
+			}
 		
-		// Get the destination account
-		accountIndex = readline.question("Please select the destination by entering a choice (e.g., enter 1 for the first account) ");
-		
-		// Get the destination account based on index
-		let dstAccount = customer.getAccount(accountIndex - 1);		
-		
-		// Get the transfer amount
-		// Austin Checks for NaN or negative numbers
-		let transferAmount = -5;
-		while (isNaN(transferAmount) || (transferAmount < 0)){
-			transferAmount = readline.question("Please enter the transfer amount: ");
+			// Get the source account based on index
+			let srcAccount = customer.getAccount(activeAccount1 - 1);
 			
-			if(isNaN(transferAmount) || (transferAmount < 0)){
-				console.log("That is not a valid number.");
-			}	
-		}
-		//Austin Checks if account has enough money to transfer
-		if(parseFloat(srcAccount.acctBalance) >= parseFloat(transferAmount)) {
-			// Withdraw the money from the source account
-			srcAccount.withdraw(transferAmount);
+			done = false;
+			while (!done || activeAccount2 <= 0 || activeAccount2 > acctNum)
+			{
+				// Get the destination account
+				accountIndex = readline.question("Please select the destination by entering a choice (e.g., enter 1 for the first account) ");
+				// Convert to integer
+				activeAccount2 = +accountIndex;
+				console.log(activeAccount2);
+				done = validateAmount(activeAccount2);
+				
+				
+				if(!done){
+					console.log("That is not a valid account number.");
+				}	
+				if(activeAccount1 == activeAccount2){
+					console.log("Account already selected, try another.");
+					done = false;
+				}
+			}
+		
+			// Get the destination account based on index
+			let dstAccount = customer.getAccount(activeAccount2 - 1);		
+			
+			// Get the transfer amount
+			let transferAmount = 0;
+			let intAmount = 0;
+			done = false;
+			
+			while (!done)
+			{
+				transferAmount = readline.question("Please enter the transfer amount: ");
+					
+				// Convert to integer
+				intAmount = +transferAmount;
+					
+				done = validateAmount(intAmount);
 
-			// Deposit the money
-			dstAccount.deposit(transferAmount);			
-			console.log("Updated account information: ");
-			srcAccount.printAcct();
-			console.log("\n");
-			dstAccount.printAcct();
+				if(!done){
+					console.log("That is not a valid number.");
+				}	
+			}
+			
+			//Austin Checks if account has enough money to transfer
+			if(parseFloat(srcAccount.acctBalance) >= parseFloat(transferAmount)) {
+				// Withdraw the money from the source account
+				srcAccount.withdraw(transferAmount);
+	
+				// Deposit the money
+				dstAccount.deposit(transferAmount);			
+				console.log("Updated account information: ");
+				srcAccount.printAcct();
+				console.log("\n");
+				dstAccount.printAcct();
+			}
+			else { 
+				console.log("Account does not have enough money. Process voided."); 
+			} 
 		}
-		else { 
-			console.log("Account does not have enough money. Process voided."); 
-		} 
-
+		else {
+			console.log("Not enough accounts to transfer. Process voided."); 
+		}
 	}
 		
 	// ---------------------------------------------
